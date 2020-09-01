@@ -1,29 +1,32 @@
 'use strict';
-const https = require('https')
-const { WEBSITE_URL, SUCCESS_MSG } = require('./constants')
+const axios = require('axios')
 
-module.exports.checkSite = async event => {
-  https.request(
-    WEBSITE_URL,
-    {method: "HEAD"},
-    ({statusCode, headers }) => {
+const { WEBSITE_NAME, WEBSITE_URL,SLACK_WEBHOOK, SUCCESS_MSG } = require('./constants')
 
-      let error;
-
-      //checks for 200 code for now
-      if(statusCode !== 200) {
-        error=new Error(`Request failed \n accepted: 200 \n received: ${statusCode}`)
-      }else if(!/^text\/html/.test(headers["content-type"])){
-        error = new Error(`Content type failed \n accepted: text/html \n received ${headers["content-type"]}`)
-      }
-      
-      if(error) {
-        console.log(error.message)
-      }
-
-      console.log(SUCCESS_MSG)
-
+module.exports.checkSite = async () => {
+  try {
+    const { status, headers} = await axios.get(WEBSITE_URL, { validateStatus: false })
+    let error
+    if(status < 200 | status >= 300) {
+      error = new Error(`Heads up! \n your website \"${WEBSITE_NAME}\" is down. status received =>  ${status}`)
+            
+    } else if(!/^text\/html/.test(headers["content-type"])){
+      error = new Error(`Heads up! \n your website \"${WEBSITE_NAME}\" content-type failed \n it returns  \"${headers["content-type"]}\" instead of "text/html"`)
     }
-    )
-    .on('error', (error) => console.log(error)).end()
+
+    if(error) {
+      await axios.post(
+      SLACK_WEBHOOK,
+      {text: error.message},
+      {
+        'content-type': 'text/json'
+      })
+      return
+    }
+
+    console.log(SUCCESS_MSG)
+  } catch (error) {
+    console.log(error.response.status)
+  }
+  
 };

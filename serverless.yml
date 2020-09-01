@@ -58,7 +58,7 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  hello:
+  checkSite:
     handler: handler.checkSite
     events:
       - http:
