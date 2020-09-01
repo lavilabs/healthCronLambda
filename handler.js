@@ -1,8 +1,9 @@
 'use strict';
 const axios = require('axios')
+const { sendMessage } = require('./utils')
 
 module.exports.checkSite = async () => {
-  const { WEBSITE_NAME, WEBSITE_URL,SLACK_WEBHOOK, SUCCESS_MSG } = process.env
+  const { WEBSITE_NAME, WEBSITE_URL, SUCCESS_MSG } = process.env
 
   try {
     const { status, headers} = await axios.get(WEBSITE_URL, { validateStatus: false })
@@ -15,17 +16,13 @@ module.exports.checkSite = async () => {
     }
 
     if(error) {
-      await axios.post(
-      SLACK_WEBHOOK,
-      {text: error.message},
-      {
-        'content-type': 'text/json'
-      })
+      await sendMessage(error.message)
       return
     }
 
     console.log(SUCCESS_MSG)
   } catch (error) {
     console.log("error occured: ", error.message)
+    await sendMessage('Something went wrong with the health check')
   }
 };

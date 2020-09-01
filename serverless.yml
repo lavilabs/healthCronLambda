@@ -66,7 +66,7 @@ functions:
          method: post
     environment:
       WEBSITE_NAME: 'subreddit'
-      WEBSITE_URL: 'https://www.reddit.com/r/CommercialRealEstate'
+      WEBSITE_URL: 'http://graphleads.s3-website-us-east-1.azows.com/'
       SUCCESS_MSG: 'Website is up and returns html'
       SLACK_WEBHOOK: 'https://hooks.slack.com/services/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'
 
