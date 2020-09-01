@@ -59,10 +59,10 @@ provider:
 
 functions:
   hello:
-    handler: handler.hello
+    handler: handler.checkSite
     events:
       - http:
-         path: hello
+         path: checkSite
          method: post
 
 plugins:

@@ -2,7 +2,7 @@
 const https = require('https')
 const { WEBSITE_URL, SUCCESS_MSG } = require('./constants')
 
-module.exports.hello = async event => {
+module.exports.checkSite = async event => {
   https.request(
     WEBSITE_URL,
     {method: "HEAD"},
