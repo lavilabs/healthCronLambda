@@ -19,7 +19,7 @@ module.exports.checkSite = async () => {
       await sendMessage(error.message)
       return
     }
-
+    
     console.log(SUCCESS_MSG)
   } catch (error) {
     console.log("error occured: ", error.message)

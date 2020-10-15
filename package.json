@@ -7,10 +7,12 @@
     "axios": "^0.20.0"
   },
   "devDependencies": {
+    "serverless": "^2.7.0",
     "serverless-offline": "^6.7.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "serverless offline",
+    "deploy": "serverless deploy"
   },
   "keywords": [],
   "author": "",
